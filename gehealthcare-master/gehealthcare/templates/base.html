@@ -1,0 +1,89 @@
+{% load compress %}{% load raven %}
+{% load static i18n %}
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+    <title>{% block title %}gehealthcare{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="version" content="{{ site_info.RELEASE_VERSION }}">
+    <meta name="description" content="{% block meta_description %}{% endblock meta_description %}">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="en" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    
+    {% if site_info.IS_RAVEN_INSTALLED %}
+        <script>Raven.config('{% sentry_public_dsn %}').install()</script>
+    {% endif %}
+
+    {% block css %}
+    <link href="{% static 'css/normalize.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
+    <script src="{% static 'assets/js/require.min.js' %}"></script>
+    <script>
+      requirejs.config({
+          baseUrl: '/static'
+      });
+    </script>
+    <!-- Dashboard Core -->
+    <link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+    <script src="{% static 'assets/js/dashboard.js' %}"></script>
+    <!-- c3.js Charts Plugin -->
+    <link href="{% static 'assets/plugins/charts-c3/plugin.css' %}" rel="stylesheet" />
+    <script src="{% static 'assets/plugins/charts-c3/plugin.js' %}"></script>
+    <!-- Google Maps Plugin -->
+    <link href="{% static 'assets/plugins/maps-google/plugin.css' %}" rel="stylesheet" />
+    <script src="{% static 'assets/plugins/maps-google/plugin.js' %}"></script>
+    <!-- Input Mask Plugin -->
+    <script src="{% static 'assets/plugins/input-mask/plugin.js' %}"></script>
+    
+
+    {% endblock css %}
+    {% block head_extras %}{% endblock %}
+  </head>
+
+  <body class="{% block body_classes %}{% endblock body_classes %} ">
+    <!--[if lt IE 8]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    {% block header %}
+
+    {% endblock header %}
+
+    {% block content %}
+    {% endblock content %}
+
+    {% block footer %} {% endblock footer %}
+
+    <!-- Le javascript
+    ================================================== -->
+    {# Placed at the end of the document so the pages load faster #}
+    {% block js %}
+      <!-- Latest JQuery -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+      <!-- Your stuff: Third-party javascript libraries go here -->
+
+      <!-- place project specific Javascript in this file -->
+      {% compress js %}
+      <script src="{% static 'js/main.js' %}"></script>
+      {% endcompress %}
+
+      {% if debug %}
+        <!--Livereloading support -->
+        <script>{% include "devrecargar/devrecargar.js" %}</script>
+      {% endif %}
+    {% endblock js %}
+  </body>
+</html>
